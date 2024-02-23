@@ -1,0 +1,58 @@
+\documentclass{beamer}
+
+\usepackage{lipsum}
+\usepackage{amsmath,amsthm,amssymb}
+\boldmath
+\usetheme{TACsy}
+\usepackage[orientation=portrait,size=a0,scale=1.4]{beamerposter}
+
+\title[Beamer Poster]{TACsy Poster Example Title} 
+\author{Klaus Weinbauer, 2nd Author, 3rd Author}
+\institute{Bioinformatik, Institut für Informatik}
+\presenter{Klaus Weinbauer}{klaus@bioinf.uni-leipzig.de}
+
+% available logos: sdu, unileipzig, unijena, univienna, tuvienna, unisheffield
+\unilogo{unileipzig} 
+
+\begin{document}
+
+\begin{frame}
+	\vfill
+	\begin{columns}[t]
+		\begin{column}{.48\linewidth}
+			\begin{block}{Abstract}
+				\lipsum[1]
+			\end{block}
+		\end{column}
+		\begin{column}{.48\linewidth}
+			\begin{block}{Methodology}
+				Some bullet points:
+				\begin{itemize}
+					\item Item 1
+					\item Item 2
+					\item Item 3
+					\item Item 4
+					\item Item 5
+				\end{itemize}
+				\begin{equation}
+					\sum_{k=0}^{\infty}{q^k} = \frac{1}{1-q} \quad\quad\quad |q| < 1 
+				\end{equation}
+			\end{block}
+			\begin{block}{Results}
+				Present your impressive results here.
+			\end{block}
+		\end{column}
+	\end{columns}
+	\vfill
+	\begin{columns}[t]
+		\begin{column}{.98\linewidth}
+			\begin{block}{Wide Block}
+				\centering
+				\includegraphics[width=\linewidth]{figures/tacsy_logo.jpg}
+			\end{block}
+		\end{column}
+	\end{columns}
+	\vfill
+\end{frame}
+
+\end{document}
