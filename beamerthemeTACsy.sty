@@ -2,12 +2,16 @@
 
 \mode<presentation>
 
+\usepackage{tikz}
 \usepackage{pifont}
 \usepackage{ifthen}
 
+\usetikzlibrary{positioning}
+
+\def\templatefiguredir{template_figures}
 \def\presentername{Presenter Name}
 \def\presenteremail{Presenter E-Mail}
-\def\unilogopath{figures/leipzig_university_logo_light.pdf}
+\def\unilogopath{\templatefiguredir/leipzig_university_logo_light.pdf}
 
 \newcommand{\presenter}[2]{
 	\def\presentername{#1}
@@ -20,13 +24,22 @@
 }
 
 \newcommand{\unilogo}[1]{
-	% if you add a new logo make sure the image has an aspect ratio of 2.856:1 (width:height)
-	\ifthenelse{\equal{#1}{unileipzig}}{\def\unilogopath{figures/leipzig_university_logo_light.pdf}}{}
-	\ifthenelse{\equal{#1}{tuvienna}}{\def\unilogopath{figures/tu_vienna_logo_light.pdf}}{}
-	\ifthenelse{\equal{#1}{unijena}}{\def\unilogopath{figures/jena_university_logo_light.png}}{}
-	\ifthenelse{\equal{#1}{univienna}}{\def\unilogopath{figures/vienna_university_logo_light.png}}{}
-	\ifthenelse{\equal{#1}{unisheffield}}{\def\unilogopath{figures/sheffield_university_logo_light.pdf}}{}
-	\ifthenelse{\equal{#1}{sdu}}{\def\unilogopath{figures/sdu_logo_light.png}}{}
+	\ifthenelse{\equal{#1}{unileipzig}}{
+		\def\unilogopath{\templatefiguredir/leipzig_university_logo_light.pdf}}{}
+	\ifthenelse{\equal{#1}{tuvienna}}{
+		\def\unilogopath{\templatefiguredir/tu_vienna_logo_light.pdf}}{}
+	\ifthenelse{\equal{#1}{unijena}}{
+		\def\unilogopath{\templatefiguredir/jena_university_logo_light.png}}{}
+	\ifthenelse{\equal{#1}{univienna}}{
+		\def\unilogopath{\templatefiguredir/vienna_university_logo_light.png}}{}
+	\ifthenelse{\equal{#1}{unisheffield}}{
+		\def\unilogopath{\templatefiguredir/sheffield_university_logo_light.pdf}}{}
+	\ifthenelse{\equal{#1}{sdu}}{
+		\def\unilogopath{\templatefiguredir/sdu_logo_light.png}}{}
+}
+
+\newcommand{\conferencelogo}[1]{
+	\def\conferencelogofile{#1}
 }
 
 \definecolor{tacsydark}{HTML}{28303d}
@@ -76,78 +89,101 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\setbeamertemplate{headline}{  
-  \leavevmode
+\def\headlineheight{15em}
+\def\headlinecontentheight{14em}
+\def\headlineborderleft{2em}
+\def\headlinebordertop{0em}
+\def\headlinetitlespace{2em}
+\def\headlineauthorspace{1em}
+\def\headlineaffiliationspace{0.5em}
+\def\headlinecontactpadding{1em}
 
-  \begin{beamercolorbox}[wd=\paperwidth]{headline}
-    \begin{columns}[T]
-      \begin{column}{.01\paperwidth}
-	  \end{column}
-      \begin{column}{.25\paperwidth}
-		  \centering
-		  \includegraphics[width=.85\linewidth]{figures/tacsy_logo.jpg}
-      \end{column}
-      \begin{column}{.73\paperwidth}
-		\vspace{1.5cm}
-        \usebeamercolor{title in headline}{\color{fg}\huge{\inserttitle}\\[1ex]}
-        \usebeamercolor{author in headline}{\color{fg}\large{\insertauthor}\\[1ex]}
-        \usebeamercolor{institute in headline}{\color{fg}\large{\insertinstitute}\\[1ex]}     
-      \end{column}
-      \begin{column}{.01\paperwidth}
-	  \end{column}
-    \end{columns}
-	\vspace{1cm}
-  \end{beamercolorbox}
+\setbeamertemplate{headline}{  
+	\leavevmode
+
+	\begin{beamercolorbox}[wd=\paperwidth,ht=\headlineheight]{headline}
+		\begin{tikzpicture}[overlay, remember picture]
+			\node[anchor=north west,xshift=\headlineborderleft,yshift=-\headlinebordertop] 
+				(tacsy_logo) at (current page.north west)
+				{
+					\includegraphics[height=\headlinecontentheight]
+					{\templatefiguredir/tacsy_logo.jpg}
+				};
+
+			\node[anchor=north,yshift=-\headlinetitlespace] 
+				(title) at (current page.north) 
+				{
+					\usebeamercolor{title in headline}{\color{fg}\huge{\inserttitle}}
+				};
+			\node 
+				(authors) [below=\headlineauthorspace of title]
+				{
+					\usebeamercolor{author in headline}{\color{fg}\large{\insertauthor}}
+				};
+			\node 
+				(institute) [below=\headlineaffiliationspace of authors]
+				{
+					\usebeamercolor{institute in headline}{\color{fg}\large{\insertinstitute}}     
+				};
+			\ifx\conferencelogofile\undefined\else
+				\node[anchor=north east, xshift=-\headlineborderleft,yshift=-\headlinebordertop] 
+					(conference_logo) at (current page.north east)
+					{
+						\includegraphics[height=\headlinecontentheight]{\conferencelogofile}
+					};
+			\fi
+		\end{tikzpicture}
+	\end{beamercolorbox}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\def\footlineheight{5em}
+\def\footlinecontentheight{4em}
+\def\footlineborder{0.2em}
+\def\footlinecontactpadding{1em}
+
 \setbeamertemplate{footline}{
-  \begin{beamercolorbox}[leftskip=1cm,rightskip=1cm]{footline}%
-	\vspace{0.5cm}
-	\begin{columns}[T]
-	  \begin{column}{.01\paperwidth}
-	  \end{column}
-	  \begin{column}{.3\paperwidth}
-		\scriptsize
-		Funded by the European Union. 
-		Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or European Research Executive Agency (REA). 
-		Neither the European Union nor the granting authority can be held responsible for them.
-	  \end{column}
-	  \begin{column}{.01\paperwidth}
-	  \end{column}
-	  \begin{column}{.40\paperwidth}
-		\begin{columns}[T]
-		  \begin{column}{.15\linewidth}
-			\includegraphics[height=.95\linewidth]{figures/marie_curie_actions_logo.png}
-		  \end{column}
-		  \begin{column}{.22\linewidth}
-			\includegraphics[width=.95\linewidth]{figures/eu_flag.pdf}
-		  \end{column}
-		  \begin{column}{.22\linewidth}
-			\vspace{1.2cm}
-			\small
-			Funded by the \\	
-			European Union
-		  \end{column}
-		  \begin{column}{.41\linewidth}
-			\centering
-			\includegraphics[width=.95\linewidth]{\unilogopath}
-		  \end{column}
-		\end{columns}
-	  \end{column}
-	  \begin{column}{.01\paperwidth}
-	  \end{column}
-	  \begin{column}{.25\linewidth}
-		\raggedleft
-		\vfill
-		\insertpresenter
-	  \end{column}
-	  \begin{column}{.01\paperwidth}
-	  \end{column}
-	\end{columns}
-	\vspace{0.5cm}
-  \end{beamercolorbox}
+	\begin{beamercolorbox}[sep=0.3cm,wd=\paperwidth,ht=\footlineheight]{footline}
+		\begin{tikzpicture}[overlay, remember picture]
+			% Marie curie actions logo
+			\node[anchor=south west,xshift=\footlineborder, yshift=\footlineborder] 
+				(mca_logo) at (current page.south west) 
+				{
+					\includegraphics[height=\footlinecontentheight]
+					{\templatefiguredir/marie_curie_actions_logo.png}
+				};
+
+			% EU Flag
+			\node 
+				(eu_flag) [right=0 of mca_logo] 
+				{
+					\includegraphics[height=\footlinecontentheight]
+					{\templatefiguredir/eu_flag.pdf}
+				};
+			\node 
+				(funded_text) [right=0 of eu_flag,align=left] 
+				{
+					Funded by \\ the European Union
+				};
+			
+			% Contact
+			\node[anchor=south east,xshift=-\footlineborder, yshift=\footlinecontactpadding] 
+				(presenter_text) at (current page.south east)
+				[align=right]
+				{
+					\usebeamercolor[fg]{presenter}\insertpresenter
+				};
+
+			% Uni logo
+			\node[anchor=south, yshift=\footlineborder] 
+				(uni_logo) at (current page.south) 
+				{
+					\includegraphics[height=\footlinecontentheight]{\unilogopath}
+				};
+
+		\end{tikzpicture}
+	\end{beamercolorbox}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
